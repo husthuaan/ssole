@@ -1,0 +1,43 @@
+encoder:
+  target: "models.ssole_encoder.SSOLEEncoder"
+  params:
+    base_encoder: resnet18
+    dim: 4096
+    mlp_hidden_dim: 4096
+    mlp_layers: 3
+    mlp_bn: false
+    mlp: true
+data:
+  target: data.multicropdataset.MultiCropDataset
+  params:
+    data_path: /path/to/imagenet100/train
+    nmb_crops: [4,]
+    size_crops: [224,]
+    min_scale_crops: [0.14,]
+    max_scale_crops: [1.,]
+    solar_prob: 0.2
+train:
+  seed: 42
+  base_lr: 2.0
+  batch_size: 32
+  workers: 16
+  LARS: false
+  wd: 1.0e-5
+  epochs: 100
+  save_top_k: 5
+  log_dir: ssole_imagenet100_m4
+  devices: 0,1,2,3
+  check_val_every_n_epoch: 2
+  progress_bar_refresh_rate: 25
+  callbacks:
+    - 
+      target: utils.DecayLRCos
+      params: 
+        base_lr: 2.0
+        final_lr: 0.002
+loss:
+  target: "loss.ssole_loss.ssole_loss"
+  params:
+    config:
+      lambda_: 0.6
+    
