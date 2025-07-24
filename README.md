@@ -11,7 +11,7 @@ PyTorchLightning
 ## Training
 
 ```bash
-python main.py --config configs/ssole_imagenet100_m4.yaml
+python train.py --config configs/ssole_imagenet100_m4.yaml
 ```
 
 ## Configuration
